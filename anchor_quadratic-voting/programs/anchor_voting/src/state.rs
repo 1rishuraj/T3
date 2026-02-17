@@ -18,6 +18,7 @@ pub struct Proposal {
     pub authority: Pubkey,
     pub yes_vote_count: u64,
     pub no_vote_count: u64,
+    pub closed: bool,      // ← ADDED THIS
     pub bump: u8,
 }
 

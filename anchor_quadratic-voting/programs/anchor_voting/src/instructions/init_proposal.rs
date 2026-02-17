@@ -39,6 +39,7 @@ pub fn init_proposal(ctx: Context<InitProposal>, metadata: String) -> Result<()>
         authority: ctx.accounts.creator.key(),
         yes_vote_count: 0,
         no_vote_count: 0,
+        closed: false,         // ← ADD THIS
         bump: ctx.bumps.proposal,
     });
 

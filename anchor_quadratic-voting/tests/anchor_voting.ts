@@ -17,8 +17,12 @@ describe("Quadratic Voting DAO", () => {
   const GovName = "Test Gov";
 
   const [GovPda] = anchor.web3.PublicKey.findProgramAddressSync(
-    [Buffer.from("gov"), provider.wallet.publicKey.toBuffer(), Buffer.from(GovName)],
-    program.programId
+    [
+      Buffer.from("gov"),
+      provider.wallet.publicKey.toBuffer(),
+      Buffer.from(GovName),
+    ],
+    program.programId,
   );
 
   const [proposalPda] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -27,7 +31,7 @@ describe("Quadratic Voting DAO", () => {
       GovPda.toBuffer(),
       new anchor.BN(0).toArrayLike(Buffer, "le", 8),
     ],
-    program.programId
+    program.programId,
   );
 
   let mint: anchor.web3.PublicKey;
@@ -45,7 +49,9 @@ describe("Quadratic Voting DAO", () => {
 
     const gov = await program.account.governance.fetch(GovPda);
     expect(gov.name).to.equal(GovName);
-    expect(gov.authority.toBase58()).to.equal(provider.wallet.publicKey.toBase58());
+    expect(gov.authority.toBase58()).to.equal(
+      provider.wallet.publicKey.toBase58(),
+    );
     expect(gov.proposalAccount.toNumber()).to.equal(0);
   });
 
@@ -64,7 +70,9 @@ describe("Quadratic Voting DAO", () => {
 
     const proposal = await program.account.proposal.fetch(proposalPda);
     expect(proposal.metadata).to.equal(metadata);
-    expect(proposal.authority.toBase58()).to.equal(provider.wallet.publicKey.toBase58());
+    expect(proposal.authority.toBase58()).to.equal(
+      provider.wallet.publicKey.toBase58(),
+    );
     expect(proposal.yesVoteCount.toNumber()).to.equal(0);
     expect(proposal.noVoteCount.toNumber()).to.equal(0);
 
@@ -81,14 +89,14 @@ describe("Quadratic Voting DAO", () => {
       (provider.wallet as anchor.Wallet).payer,
       provider.wallet.publicKey,
       null,
-      0 
+      0,
     );
 
     voterTokenAccount = await createAccount(
       provider.connection,
       (provider.wallet as anchor.Wallet).payer,
       mint,
-      provider.wallet.publicKey
+      provider.wallet.publicKey,
     );
 
     await mintTo(
@@ -97,7 +105,7 @@ describe("Quadratic Voting DAO", () => {
       mint,
       voterTokenAccount,
       provider.wallet.publicKey,
-      tokenAmount
+      tokenAmount,
     );
 
     const [votePda] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -106,7 +114,7 @@ describe("Quadratic Voting DAO", () => {
         provider.wallet.publicKey.toBuffer(),
         proposalPda.toBuffer(),
       ],
-      program.programId
+      program.programId,
     );
 
     await program.methods
@@ -123,7 +131,9 @@ describe("Quadratic Voting DAO", () => {
 
     const vote = await program.account.vote.fetch(votePda);
     expect(vote.voteType).to.equal(1);
-    expect(vote.authority.toBase58()).to.equal(provider.wallet.publicKey.toBase58());
+    expect(vote.authority.toBase58()).to.equal(
+      provider.wallet.publicKey.toBase58(),
+    );
     expect(vote.voteCredits.toNumber()).to.equal(10);
 
     const proposal = await program.account.proposal.fetch(proposalPda);
@@ -137,7 +147,7 @@ describe("Quadratic Voting DAO", () => {
 
     const sig = await provider.connection.requestAirdrop(
       newVoter.publicKey,
-      2 * anchor.web3.LAMPORTS_PER_SOL
+      2 * anchor.web3.LAMPORTS_PER_SOL,
     );
     await provider.connection.confirmTransaction(sig);
 
@@ -145,7 +155,7 @@ describe("Quadratic Voting DAO", () => {
       provider.connection,
       newVoter,
       mint,
-      newVoter.publicKey
+      newVoter.publicKey,
     );
 
     await mintTo(
@@ -154,7 +164,7 @@ describe("Quadratic Voting DAO", () => {
       mint,
       newVoterTokenAccount,
       provider.wallet.publicKey,
-      tokenAmount
+      tokenAmount,
     );
 
     const [votePda] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -163,11 +173,11 @@ describe("Quadratic Voting DAO", () => {
         newVoter.publicKey.toBuffer(),
         proposalPda.toBuffer(),
       ],
-      program.programId
+      program.programId,
     );
 
     await program.methods
-      .castVote(0) 
+      .castVote(0)
       .accountsPartial({
         voter: newVoter.publicKey,
         proposal: proposalPda,
@@ -190,14 +200,20 @@ describe("Quadratic Voting DAO", () => {
   });
 
   it("closes proposal", async () => {
+    const proposalBefore = await program.account.proposal.fetch(proposalPda);
+    console.log("Before close:", proposalBefore.closed); // false
+
     await program.methods
-      .closeProposal()
-      .accountsPartial({
-        authority: provider.wallet.publicKey,
+      .closeProposal() 
+      .accounts({
+        authority: provider.wallet.publicKey, 
         proposal: proposalPda,
-        systemProgram: anchor.web3.SystemProgram.programId,
       })
       .rpc();
+
+    const proposalAfter = await program.account.proposal.fetch(proposalPda);
+    expect(proposalAfter.closed).to.be.true;
+    console.log("After close:", proposalAfter.closed); // true
   });
 
   it("validates results", async () => {

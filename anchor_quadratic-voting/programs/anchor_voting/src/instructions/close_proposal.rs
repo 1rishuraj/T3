@@ -1,24 +1,20 @@
 use anchor_lang::prelude::*;
 use crate::state::Proposal;
-
+use crate::error::ErrorCode;
 #[derive(Accounts)]
 pub struct CloseProposal<'info> {
-    #[account(mut)]
+    #[account(mut, constraint = authority.key() == proposal.authority @ ErrorCode::Unauthorized)]
     pub authority: Signer<'info>,
+    
     #[account(mut)]
     pub proposal: Account<'info, Proposal>,
-    pub system_program: Program<'info, System>,
 }
 
 pub fn close_proposal(ctx: Context<CloseProposal>) -> Result<()> {
     let proposal = &mut ctx.accounts.proposal;
-    proposal.set_inner(Proposal {
-        metadata: proposal.metadata.clone(),
-        authority: ctx.accounts.authority.key(),
-        yes_vote_count: proposal.yes_vote_count,
-        no_vote_count: proposal.no_vote_count,
-        bump: proposal.bump,
-    });
+    require!(!proposal.closed, ErrorCode::ProposalAlreadyClosed);
+    
+    proposal.closed = true;  // Just flip the flag!
     Ok(())
 }
 

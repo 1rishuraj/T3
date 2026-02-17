@@ -2,12 +2,13 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program_pack::Pack;
 use anchor_spl::token::{spl_token, Token};
 use crate::state::{Proposal, Vote};
+use crate::error::ErrorCode;
 
 #[derive(Accounts)]
 pub struct CastVote<'info> {
     #[account(mut)]
     pub voter: Signer<'info>,
-    #[account(mut)]
+    #[account(mut, constraint = !proposal.closed @ ErrorCode::ProposalAlreadyClosed)]
     pub proposal: Account<'info, Proposal>,
 
     #[account(
