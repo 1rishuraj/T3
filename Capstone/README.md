@@ -8,7 +8,10 @@ Unlike standard crowdfunding, PulseRaise features native yield generation. Throu
 
 Deployed on Devnet [HERE](https://pulseraise.vercel.app/)
 
-https://github.com/user-attachments/assets/6561be15-e409-4e07-8035-024b3ca1f051
+
+https://github.com/user-attachments/assets/99f94dd5-e380-4c54-8a09-8355928f1d05
+
+
 
 
 
