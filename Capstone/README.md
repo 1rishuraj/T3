@@ -23,6 +23,7 @@ Deployed on Devnet [HERE](https://pulseraise.vercel.app/)
 
 * **Creator Control:** Only the campaign creator has the authority to update metadata, close the campaign, or withdraw available funds.
 
+* **Deployer Control:** Only the platform(contract) deployer has the authority to update the Platform fee.
 
 
 ## 🏗 Architecture & Protocol Workflow
