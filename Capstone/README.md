@@ -6,7 +6,7 @@ PulseRaise is a Solana-based fundraising protocol that lets creators and DAOs la
 
 Unlike standard crowdfunding, PulseRaise features native yield generation. Through seamless integration with the Jito Stake Pool🪙, donated SOL is automatically converted into JitoSOL Liquid Staking Tokens (LSTs)—allowing campaigns to passively earn staking yield and maximize capital efficiency while active.
 
-Deployed on Devnet [Here](pulseraise.vercel.app)
+Deployed on Devnet [HERE](https://pulseraise.vercel.app/)
 
 ## ✨ Key Features
 
