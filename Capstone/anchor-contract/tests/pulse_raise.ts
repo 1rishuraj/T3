@@ -1,6 +1,6 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import { PulseRaise } from "../target/types/pulse_raise";
+import { PulseRaise } from "../target/types/pulse-raise";
 import { expect } from "chai";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
