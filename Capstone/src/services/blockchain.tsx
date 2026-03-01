@@ -1,5 +1,5 @@
 import { AnchorProvider, Program, } from '@coral-xyz/anchor'
-import { PulseRaise } from '../../anchor-contract/target/types/pulse_raise'
+import { PulseRaise } from '../../anchor-contract/target/types/pulse-raise'
 import { useAnchorWallet, useConnection } from '@solana/wallet-adapter-react';
 import { useMemo } from 'react';
 import idl from '../../anchor-contract/target/idl/pulse_raise.json';
