@@ -2,7 +2,6 @@
 
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { campaigns } from '@/data'
 import Link from 'next/link'
 import { fetchCampaignDetails, updateCampaign, usePulseRaiseProgram } from '@/services/blockchain'
 import { toast } from 'react-toastify'
