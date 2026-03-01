@@ -9,7 +9,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import * as solanaStakePool from "@solana/spl-stake-pool";
-import wollet from './pvtcreator.json'
+// import wollet from './pvtcreator.json'
 
 async function ensureAtaExists(provider: anchor.AnchorProvider, mint: anchor.web3.PublicKey, owner: anchor.web3.PublicKey) {
   const ata = getAssociatedTokenAddressSync(mint, owner, true);
@@ -44,7 +44,7 @@ describe("pulse-raise", () => {
   const deployer = provider.wallet.publicKey;
   //A5czjgBJ4Wqnexyxy2K2NDhiwz8LqJsV5Wd921tUw9yz
   let deployerjitoATA: anchor.web3.PublicKey;
-  let creatorKeypair = anchor.web3.Keypair.fromSecretKey(new Uint8Array(wollet));
+  let creatorKeypair = anchor.web3.Keypair.generate();
   let campaignPDA: anchor.web3.PublicKey;
 
   let jitosolMint: anchor.web3.PublicKey;
@@ -302,7 +302,7 @@ describe("pulse-raise", () => {
   it("is Donation occurring", async () => {
     // Add your test here.
     const campaignAccount = await program.account.campaign.fetch(campaignPDA);
-    let donorKeypair = anchor.web3.Keypair.fromSecretKey(new Uint8Array(wollet));
+    let donorKeypair = anchor.web3.Keypair.generate();
     /*airdrop
     await provider.connection.requestAirdrop(
       donorKeypair.publicKey,
