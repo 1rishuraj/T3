@@ -1,7 +1,8 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { PulseRaise } from "../target/types/pulse-raise";
-import { expect, before } from "chai";
+import { before } from "mocha";  
+import { expect } from "chai";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   createAssociatedTokenAccountInstruction,
