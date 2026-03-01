@@ -2,7 +2,6 @@
 
 import CampaignCard from '@/components/CampaignCard'
 import CampaignHero from '@/components/CampaignHero'
-import { campaigns as dummyCampaign } from '../data'
 import { useState, useEffect } from 'react'
 import { Campaign } from '@/utils/interfaces'
 import { fetchActiveCampaigns, usePulseRaiseProgram } from '@/services/blockchain'
