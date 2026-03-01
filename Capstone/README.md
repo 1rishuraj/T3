@@ -1,94 +1,149 @@
-# fundus
+# PulseRaise 🚀
 
-## Getting Started
+**The New Pulse of Web3 Crowdfunding**
+
+PulseRaise is a Solana-based, campaign-driven fundraising protocol that enables creators, DAOs, and communities to launch on-chain fundraising campaigns and receive donations directly through Solana wallets.
+
+By leveraging Solana's speed and Program Derived Addresses (PDAs), PulseRaise removes traditional crowdfunding intermediaries. It provides transparent, real-time visibility into capital flows, permissionless global donations, and creator-controlled withdrawals
+
+Deployed on Devnet [Here](pulseraise.vercel.app)
+
+## ✨ Key Features
+
+* **On-Chain Campaign Infrastructure:** Campaign creation, donation tracking, and withdrawals are implemented entirely on-chain using PDAs and Solana's native transfer system.
+
+
+* **Permissionless Global Donations:** Anyone with a Solana wallet can donate to an active campaign without approval or intermediaries.
+
+
+* **Yield-Backed Treasury (Jito Integration):** Donated SOL is seamlessly routed through the Jito Stake Pool, converting to JitoSOL in the campaign's Associated Token Account (ATA) to generate liquid staking yield while the campaign is active.
+
+* **Deterministic, Transparent Fees:** Platform fees are enforced directly in the smart contract and transparently split and routed to the platform address at the time of withdrawal.
+
+
+* **Creator Control:** Only the campaign creator has the authority to update metadata, close the campaign, or withdraw available funds.
+
+
+
+## 🏗 Architecture & Protocol Workflow
+
+The protocol follows a strict, trustless lifecycle enforced by Anchor smart contracts:
+
+1. **Protocol Initialization:** The protocol initializes a global on-chain state (`Program State PDA`) that defines the platform fee rate and the fee recipient (deployer) address.
+
+
+2. **Campaign Creation:** A user creates a campaign, generating a unique `Campaign PDA` derived from a campaign ID counter. Metadata (title, description, image URI) and the funding goal are stored immutably on-chain .
+
+
+3. **Donation Flow:** 
+    * A donor selects an active campaign and donates SOL.
+  
+  
+    * The program fetches the Campaign PDA and verifies it is active.
+  
+  
+    * The SOL is swapped for JitoSOL and stored directly in the campaign's ATA, immediately updating the publicly visible on-chain balance.
+
+
+
+
+4. **Withdrawal Flow:** 
+    * The creator initiates a withdrawal.
+
+
+    * The program verifies the signer is the campaign creator and checks the available balance.
+
+
+    * The platform fee is calculated deterministically based on the global state.
+
+
+    * The net JitoSOL is transferred to the creator's wallet, and the fee is routed to the platform's address.
+
+
+
+
+5. **Campaign Management:** Creators can update campaign descriptions and goals, or delete/close the campaign to prevent further donations .
+
+
+
+## 🛠 Tech Stack
+
+**Frontend:**
+
+* Next.js / React
+* Redux Toolkit (Global State Management)
+* Tailwind CSS
+* `@solana/wallet-adapter-react` (Wallet Integration)
+* `@solana/web3.js` & `@solana/spl-token`
+
+**Backend / Smart Contracts:**
+
+* Rust
+* Anchor Framework
+* `@solana/spl-stake-pool` (Jito integration)
+* Localnet Testing via Surfpool (Network Forking)
+
+## 🧪 Testing
+
+The smart contracts have been thoroughly tested on the Solana Devnet, successfully passing the full suite of lifecycle checks:
+
+* ✅ Global State Initialization
+* ✅ Campaign Creation & PDA Derivation
+* ✅ Campaign Metadata Updating
+* ✅ Campaign Deletion
+* ✅ Admin Fee Updating (1% - 15%)
+* ✅ Donations (with JitoSOL conversion)
+* ✅ Withdrawals (with accurate JitoSOL fee splits)
+
+## 💻 Local Development Setup
 
 ### Prerequisites
 
-- Node v18.18.0 or higher
+* Node.js & Yarn
+* Rust & Cargo
+* Solana CLI tools
+* Anchor CLI (`avm`)
 
-- Rust v1.77.2 or higher
-- Anchor CLI 0.30.1 or higher
-- Solana CLI 1.18.17 or higher
+### 1. Clone & Install
 
-### Installation
-
-#### Clone the repo
-
-```shell
-git clone <repo-url>
-cd <repo-name>
-```
-
-#### Install Dependencies
-
-```shell
-pnpm install
-```
-
-#### Start the web app
+```bash
+git clone https://github.com/your-username/PulseRaise.git
+cd PulseRaise
+yarn install
 
 ```
-pnpm dev
+
+### 2. Smart Contract Setup
+
+Ensure your local Solana wallet is configured:
+
+```bash
+solana-keygen new -o ~/.config/solana/id.json
+solana airdrop 2 -u devnet
+
 ```
 
-## Apps
+Build and deploy the Anchor program:
 
-### anchor
+```bash
+cd anchor-contract
+anchor build
+anchor deploy --provider.cluster devnet
 
-This is a Solana program written in Rust using the Anchor framework.
-
-#### Commands
-
-You can use any normal anchor commands. Either move to the `anchor` directory and run the `anchor` command or prefix the command with `pnpm`, eg: `pnpm anchor`.
-
-#### Sync the program id:
-
-Running this command will create a new keypair in the `anchor/target/deploy` directory and save the address to the Anchor config file and update the `declare_id!` macro in the `./src/lib.rs` file of the program.
-
-You will manually need to update the constant in `anchor/lib/basic-exports.ts` to match the new program id.
-
-```shell
-pnpm anchor keys sync
 ```
 
-#### Build the program:
+*Note: After deploying, sync your new Program ID in `lib.rs`, `Anchor.toml`, and the frontend constants.*
 
-```shell
-pnpm anchor-build
+### 3. Run the Frontend
+
+```bash
+cd frontend
+yarn dev
+
 ```
 
-#### Start the test validator with the program deployed:
+Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) to view the PulseRaise dApp in your browser.
 
-```shell
-pnpm anchor-localnet
-```
+---
 
-#### Run the tests
-
-```shell
-pnpm anchor-test
-```
-
-#### Deploy to Devnet
-
-```shell
-pnpm anchor deploy --provider.cluster devnet
-```
-
-### web
-
-This is a React app that uses the Anchor generated client to interact with the Solana program.
-
-#### Commands
-
-Start the web app
-
-```shell
-pnpm dev
-```
-
-Build the web app
-
-```shell
-pnpm build
-```
+Made with 💖 by Rishu Raj (https://github.com/1rishuraj)
