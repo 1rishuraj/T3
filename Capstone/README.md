@@ -2,9 +2,9 @@
 
 **The New Pulse of Web3 Crowdfunding**
 
-PulseRaise is a Solana-based, campaign-driven fundraising protocol that enables creators, DAOs, and communities to launch on-chain fundraising campaigns and receive donations directly through Solana wallets.
+PulseRaise is a Solana-based fundraising protocol that lets creators and DAOs launch transparent, on-chain campaigns. By leveraging Program Derived Addresses (PDAs), it removes traditional intermediaries to offer permissionless global donations and creator-controlled withdrawals.
 
-By leveraging Solana's speed and Program Derived Addresses (PDAs), PulseRaise removes traditional crowdfunding intermediaries. It provides transparent, real-time visibility into capital flows, permissionless global donations, and creator-controlled withdrawals
+Unlike standard crowdfunding, PulseRaise features native yield generation. Through seamless integration with the Jito Stake Pool🪙, donated SOL is automatically converted into JitoSOL Liquid Staking Tokens (LSTs)—allowing campaigns to passively earn staking yield and maximize capital efficiency while active.
 
 Deployed on Devnet [Here](pulseraise.vercel.app)
 
