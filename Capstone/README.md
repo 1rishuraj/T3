@@ -75,7 +75,12 @@ The protocol follows a strict, trustless lifecycle enforced by Anchor smart cont
 
 5. **Campaign Management:** Creators can update campaign descriptions and goals, or delete/close the campaign to prevent further donations .
 
-
+## ☑️ Basic Skeleton
+![architecure_diagram_page-0001](https://github.com/user-attachments/assets/34d01d36-9a8c-4b49-9507-3bc1d715b385)
+![architecure_diagram_page-0002](https://github.com/user-attachments/assets/ad595942-2fc5-4875-adea-ff3ca8e9118f)
+![architecure_diagram_page-0003](https://github.com/user-attachments/assets/2b49ef69-c02c-44eb-9b39-90b11d9e896e)
+![architecure_diagram_page-0004](https://github.com/user-attachments/assets/00676ceb-e059-415c-b51e-4df26af09df1)
+![architecure_diagram_page-0005](https://github.com/user-attachments/assets/8698ae35-e359-4753-a608-7cf81133c3b0)
 
 ## 🛠 Tech Stack
 
@@ -106,54 +111,8 @@ The smart contracts have been thoroughly tested on the Solana Devnet, successful
 * ✅ Donations (with JitoSOL conversion)
 * ✅ Withdrawals (with accurate JitoSOL fee splits)
 
-## 💻 Local Development Setup
+<img width="1106" height="922" alt="image" src="https://github.com/user-attachments/assets/8694290f-88fc-4d10-ad5a-f0deb5219823" />
 
-### Prerequisites
-
-* Node.js & Yarn
-* Rust & Cargo
-* Solana CLI tools
-* Anchor CLI (`avm`)
-
-### 1. Clone & Install
-
-```bash
-git clone https://github.com/your-username/PulseRaise.git
-cd PulseRaise
-yarn install
-
-```
-
-### 2. Smart Contract Setup
-
-Ensure your local Solana wallet is configured:
-
-```bash
-solana-keygen new -o ~/.config/solana/id.json
-solana airdrop 2 -u devnet
-
-```
-
-Build and deploy the Anchor program:
-
-```bash
-cd anchor-contract
-anchor build
-anchor deploy --provider.cluster devnet
-
-```
-
-*Note: After deploying, sync your new Program ID in `lib.rs`, `Anchor.toml`, and the frontend constants.*
-
-### 3. Run the Frontend
-
-```bash
-cd frontend
-yarn dev
-
-```
-
-Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) to view the PulseRaise dApp in your browser.
 
 ---
 
