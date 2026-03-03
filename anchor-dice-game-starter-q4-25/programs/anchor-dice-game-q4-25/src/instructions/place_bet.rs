@@ -1,7 +1,6 @@
 use anchor_lang::{prelude::*, system_program::{Transfer, transfer}};
 
-use crate::state::Bet;
-
+use crate::{errors::DiceError, state::Bet};
 #[derive(Accounts)]
 #[instruction(seed:u128)]
 pub struct PlaceBet<'info> {
@@ -28,6 +27,27 @@ pub struct PlaceBet<'info> {
 
 impl<'info> PlaceBet<'info> {
     pub fn create_bet(&mut self, bumps: &PlaceBetBumps, seed: u128, roll: u8, amount: u64) -> Result<()> {
+
+        //Enforce roll boundaries to prevent broken math
+        require!(roll >= 2, DiceError::MinimumRoll);
+        require!(roll <= 96, DiceError::MaximumRoll);
+
+        // Enforce minimum bet amount (0.01 SOL = 10_000_000 lamports)
+        require!(amount >= 10_000_000, DiceError::MinimumBet);
+
+        // Calculate potential payout to ensure the house is solvent
+        let potential_payout = (amount as u128)
+            .checked_mul(100)
+            .ok_or(DiceError::Overflow)?
+            .checked_div(roll as u128)
+            .ok_or(DiceError::Overflow)? as u64;
+
+        // Prevent "freerolling" by ensuring the vault has enough funds to cover a win
+        require!(
+            self.vault.lamports() >= potential_payout,
+            DiceError::MaximumBet 
+        );
+        
         self.bet.set_inner(Bet{
             slot : Clock::get()?.slot,
             player: self.player.key(),

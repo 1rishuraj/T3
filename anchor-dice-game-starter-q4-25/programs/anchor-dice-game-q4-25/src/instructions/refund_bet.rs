@@ -7,7 +7,7 @@ use crate::{errors::DiceError, state::Bet};
 
 #[derive(Accounts)]
 pub struct RefundBet<'info> {
-    #[account(mut)]
+    #[account(mut, address = bet.player)] 
     pub player: Signer<'info>,
     ///CHECK: This is safe
     pub house: UncheckedAccount<'info>,
@@ -30,7 +30,10 @@ pub struct RefundBet<'info> {
 impl<'info> RefundBet<'info> {
     pub fn refund_bet(&mut self, bumps: &RefundBetBumps) -> Result<()> {
         let slot = Clock::get()?.slot;
-        require!((self.bet.slot - slot) > 1000, DiceError::TimeoutNotReached);
+        require!(
+            slot.saturating_sub(self.bet.slot) > 1000,
+            DiceError::TimeoutNotReached
+        );
         let accounts = Transfer {
             from: self.vault.to_account_info(),
             to: self.player.to_account_info(),

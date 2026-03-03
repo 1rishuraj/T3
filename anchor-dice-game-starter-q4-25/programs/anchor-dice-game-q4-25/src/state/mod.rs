@@ -19,6 +19,6 @@ impl Bet {
         s.extend_from_slice(&self.slot.to_le_bytes());
         s.extend_from_slice(&self.amount.to_le_bytes());
         s.extend_from_slice(&[self.roll, self.bump]);
-        s        
+        s
     }
 }
